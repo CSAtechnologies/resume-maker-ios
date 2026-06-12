@@ -1,62 +1,45 @@
-# Resume Maker iPhone Handoff
+# Resume Maker — Continue Here
 
-## Current status
+## Goal
+Get Resume Maker onto the iPhone from this **Windows** PC (no Mac). Path chosen:
+**cloud macOS build → unsigned IPA → install with AltStore (auto-refresh)**.
+Sideloadly is set up too as a manual fallback.
 
-Completed on June 12, 2026:
+## DONE (all committed + pushed)
+- GitHub repo (public): https://github.com/CSAtechnologies/resume-maker-ios
+- GitHub Actions builds an **unsigned IPA** on a macOS runner. Verified: builds
+  pass in ~2 min.
+- Each build publishes a **GitHub Release** (`latest`) + an AltStore source.
+  Verified live:
+  - Source URL: `https://github.com/CSAtechnologies/resume-maker-ios/releases/latest/download/apps.json`
+  - IPA URL:    `https://github.com/CSAtechnologies/resume-maker-ios/releases/latest/download/ResumeMaker.ipa`
+- A copy of the IPA is also at `ipa-out/ResumeMaker.ipa` (for Sideloadly).
+- Guides: `ALTSTORE.md` (recommended) and `SIDELOAD.md` (fallback).
+- iTunes + iCloud downloaded on Windows (must be the **apple.com** versions).
 
-- Converted the Windows Electron renderer into a Capacitor iOS project.
-- Added iPhone Edit and Preview views.
-- Added persistent resume storage with Capacitor Preferences.
-- Added PDF export through the native iOS share sheet.
-- Added the Resume Maker app icon.
-- Generated the Xcode project in `ios/App/App.xcodeproj`.
-- Tested the full workflow at a 390 x 844 iPhone viewport:
-  editing, persistence after reload, preview rendering, and PDF generation.
-- Tested the live web build successfully in Safari on the connected iPhone.
+## RESTARTING PC NOW
+Rebooting to finish the iCloud install. Nothing pending — repo is clean.
 
-The native app has not been signed or installed because Xcode only runs on
-macOS.
+## NEXT STEPS AFTER REBOOT (AltStore route)
+1. Install **AltServer** from https://altstore.io/ , launch it (lives in the
+   system tray, click the `^` arrow).
+2. Plug in + unlock the iPhone, tap **Trust**.
+3. AltServer tray icon → **Install AltStore → [iPhone]**. Sign in with Apple ID
+   (use an app-specific password if 2FA is on:
+   https://account.apple.com/account/manage).
+4. On iPhone: **Settings → General → VPN & Device Management** → trust the
+   Apple ID profile. Enable **Developer Mode** if asked, then reboot phone.
+5. Open **AltStore → Sources → +** and paste the source URL above. Install
+   **Resume Maker**.
+6. Auto-refresh: iPhone **Settings → General → Background App Refresh → On**;
+   keep **AltServer running** on the PC (launch at startup) and iPhone on the
+   **same Wi-Fi**. AltStore re-signs the 7-day cert automatically.
 
-## Continue on a Mac
+## To rebuild after any code change
+`git push` (or Actions tab → Run workflow). New version appears as an update in
+AltStore → My Apps. Version is `1.0.<build number>`.
 
-Install Xcode and Node.js 22 or newer, then open Terminal in this folder:
-
-```bash
-npm ci
-npm run ios:sync
-open ios/App/App.xcodeproj
-```
-
-In Xcode:
-
-1. Select the **App** project and **App** target.
-2. Open **Signing & Capabilities**.
-3. Select your Apple Developer team.
-4. Change `com.resumemaker.mobile` if Xcode says the identifier is unavailable.
-5. Connect and unlock the iPhone, then trust the Mac if prompted.
-6. Select the iPhone as the run destination and press **Run**.
-7. If prompted on the iPhone, enable Developer Mode under
-   **Settings > Privacy & Security > Developer Mode**.
-
-With a free Apple ID, the development installation normally requires periodic
-re-signing. Paid Apple Developer membership supports longer-lived distribution.
-
-## Useful commands
-
-```bash
-npm run build
-npm run ios:sync
-npm run test:mobile
-```
-
-`npm run test:mobile` expects Chrome and a development server at
-`http://127.0.0.1:4173/`. Start it with:
-
-```bash
-npm run dev -- --host 127.0.0.1 --port 4173
-```
-
-## Known limitation
-
-Recursive duplicate-folder scanning remains desktop-only because iOS does not
-allow arbitrary recursive access to external folders.
+## Open optional item
+GitHub flagged the workflow's `actions/*` steps run on Node 20 (retired from
+runners Sept 16, 2026). Builds fine until then; can bump to Node-24 versions
+later.
