@@ -1,0 +1,8 @@
+{
+  "appId": "com.resumemaker.mobile",
+  "appName": "Resume Maker",
+  "webDir": "dist",
+  "ios": {
+    "backgroundColor": "#f0f2f5"
+  }
+}

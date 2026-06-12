@@ -1,0 +1,193 @@
+.ios-view-toggle {
+  display: none;
+}
+
+.tools-dropdown-item:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+@media (max-width: 767px) {
+  html,
+  body,
+  #root {
+    min-height: 100%;
+  }
+
+  body {
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+
+  button,
+  input,
+  textarea {
+    touch-action: manipulation;
+  }
+
+  .app {
+    height: 100dvh;
+    min-height: 100dvh;
+  }
+
+  .app-header {
+    min-height: 52px;
+    justify-content: flex-end;
+    padding:
+      calc(8px + env(safe-area-inset-top))
+      max(12px, env(safe-area-inset-right))
+      8px
+      max(12px, env(safe-area-inset-left));
+  }
+
+  .app-header h1 {
+    display: none;
+  }
+
+  .header-actions {
+    width: 100%;
+    justify-content: flex-end;
+    gap: 6px;
+  }
+
+  .export-btn,
+  .tools-btn {
+    min-height: 34px;
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
+  .ios-view-toggle {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+    padding: 6px max(12px, env(safe-area-inset-right)) 6px
+      max(12px, env(safe-area-inset-left));
+    background: #fff;
+    border-bottom: 1px solid #dfe3e8;
+  }
+
+  .ios-view-button {
+    min-height: 34px;
+    border: 0;
+    border-radius: 6px;
+    background: #eef0f4;
+    color: #555;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .ios-view-button-active {
+    background: #4361ee;
+    color: #fff;
+  }
+
+  .app-body {
+    display: block;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .form-panel,
+  .preview-panel {
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  .form-panel {
+    padding: 12px max(12px, env(safe-area-inset-right))
+      max(18px, env(safe-area-inset-bottom))
+      max(12px, env(safe-area-inset-left));
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .resume-form {
+    display: block;
+  }
+
+  .resume-form .form-section:last-child,
+  .resume-form .form-section:last-child .form-group {
+    display: block;
+  }
+
+  .resume-form .form-section:last-child textarea {
+    min-height: 42vh;
+  }
+
+  .form-group input,
+  .form-group textarea,
+  .dir-picker input {
+    min-height: 36px;
+    font-size: 16px;
+  }
+
+  .form-group textarea {
+    line-height: 1.35;
+  }
+
+  .dir-picker input {
+    min-width: 0;
+  }
+
+  .form-row {
+    display: block;
+  }
+
+  .style-selector {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    display: grid;
+  }
+
+  .form-section p {
+    overflow-wrap: anywhere;
+  }
+
+  .preview-panel {
+    display: block;
+    padding: 12px;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .resume-pages {
+    width: 210mm;
+    zoom: var(--ios-preview-scale, 0.42);
+  }
+
+  .app[data-mobile-view="edit"] .preview-panel,
+  .app[data-mobile-view="preview"] .form-panel {
+    display: none;
+  }
+
+  .modal,
+  .dup-modal,
+  .dup-progress-modal,
+  .dup-modal-results {
+    width: calc(100vw - 24px);
+    max-height: calc(100dvh - 32px);
+    margin:
+      max(16px, env(safe-area-inset-top))
+      max(12px, env(safe-area-inset-right))
+      max(16px, env(safe-area-inset-bottom))
+      max(12px, env(safe-area-inset-left));
+  }
+
+  .modal {
+    padding: 18px;
+  }
+
+  .toast {
+    right: max(12px, env(safe-area-inset-right));
+    bottom: max(12px, env(safe-area-inset-bottom));
+    left: max(12px, env(safe-area-inset-left));
+    max-width: none;
+  }
+
+  .tools-dropdown {
+    position: fixed;
+    top: calc(48px + env(safe-area-inset-top));
+    right: max(12px, env(safe-area-inset-right));
+  }
+}

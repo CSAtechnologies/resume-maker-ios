@@ -1,0 +1,25 @@
+{
+  "name": "resume-maker-ios",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "ios:sync": "npm run build && cap sync ios && node scripts/fix-ios-spm-paths.mjs",
+    "ios:open": "cap open ios",
+    "test:mobile": "node tests/mobile-smoke.mjs"
+  },
+  "dependencies": {
+    "@capacitor/core": "8.4.0",
+    "@capacitor/filesystem": "8.1.2",
+    "@capacitor/preferences": "8.0.1",
+    "@capacitor/share": "8.0.1"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "8.4.0",
+    "@capacitor/ios": "8.4.0",
+    "playwright-core": "1.57.0",
+    "vite": "8.0.16"
+  }
+}
