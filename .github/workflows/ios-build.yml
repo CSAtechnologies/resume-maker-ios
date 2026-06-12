@@ -8,6 +8,9 @@ on:
     branches: [main]
   workflow_dispatch: {}
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: macos-15
@@ -85,3 +88,63 @@ jobs:
           path: ResumeMaker.ipa
           if-no-files-found: error
           retention-days: 30
+
+      # ---- AltStore distribution ----
+      # Publish the IPA to a GitHub Release and generate an AltStore source so
+      # AltStore can install it and auto-refresh the 7-day signature over Wi-Fi.
+      - name: Generate AltStore source (apps.json)
+        run: |
+          VERSION="1.0.${{ github.run_number }}"
+          DATE="$(date -u +%Y-%m-%d)"
+          SIZE="$(stat -f%z ResumeMaker.ipa)"
+          REPO="${{ github.repository }}"
+          IPA_URL="https://github.com/${REPO}/releases/latest/download/ResumeMaker.ipa"
+          ICON_URL="https://raw.githubusercontent.com/${REPO}/main/public/assets/ResumeMaker.png"
+          SOURCE_URL="https://github.com/${REPO}/releases/latest/download/apps.json"
+          cat > apps.json <<JSON
+          {
+            "name": "Resume Maker (CSAtechnologies)",
+            "identifier": "com.csatechnologies.resumemaker.source",
+            "sourceURL": "${SOURCE_URL}",
+            "apps": [
+              {
+                "name": "Resume Maker",
+                "bundleIdentifier": "com.resumemaker.mobile",
+                "developerName": "CSAtechnologies",
+                "subtitle": "Build and export resumes on iPhone.",
+                "localizedDescription": "Edit, preview, and export resumes to PDF on your iPhone.",
+                "iconURL": "${ICON_URL}",
+                "tintColor": "1a1a2e",
+                "category": "productivity",
+                "screenshotURLs": [],
+                "version": "${VERSION}",
+                "versionDate": "${DATE}",
+                "downloadURL": "${IPA_URL}",
+                "size": ${SIZE},
+                "versions": [
+                  {
+                    "version": "${VERSION}",
+                    "date": "${DATE}",
+                    "localizedDescription": "Automated build ${VERSION}.",
+                    "downloadURL": "${IPA_URL}",
+                    "size": ${SIZE},
+                    "minOSVersion": "15.0"
+                  }
+                ]
+              }
+            ],
+            "news": []
+          }
+          JSON
+          echo "Generated apps.json for version ${VERSION} (size ${SIZE} bytes)"
+          cat apps.json
+
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION="1.0.${{ github.run_number }}"
+          gh release create "v${VERSION}" ResumeMaker.ipa apps.json \
+            --title "Resume Maker ${VERSION}" \
+            --notes "Automated unsigned build ${VERSION}. Install via AltStore source or Sideloadly." \
+            --latest
