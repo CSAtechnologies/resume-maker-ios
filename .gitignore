@@ -4,3 +4,9 @@ ios/App/Pods/
 ios/App/App/public/
 ios/App/DerivedData/
 *.xcuserstate
+
+# Local IPA build outputs
+ipa-out/
+Payload/
+*.ipa
+build/
